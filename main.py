@@ -19,23 +19,23 @@ for row in data_manager.sheet_data["prices"]:
         row["iataCode"] = iata_code
         data_manager.update_data(row["id"], iata_code)
 
-pprint(data_manager.sheet_data["prices"])  # Check IATA codes updated
+pprint(data_manager.sheet_data["prices"])  
 
-# 3️⃣ Check flights for each destination
 for row in data_manager.sheet_data["prices"]:
     sheet_price = row["lowestPrice"]
     destination_code = row["iataCode"]
 
-    # Search flights (mock data for now)
+  
     flights = flight_search.search_flights("LON", destination_code)
 
-    # Find cheapest flight
+
     flight_data = FlightData(flights)
     cheapest_flight = flight_data.find_cheapest_flight()
 
-    # Compare to sheet price
+  
     if cheapest_flight["price"] < sheet_price:
         message = f" DEAL FOUND! {row['city']}: ${cheapest_flight['price']} on {cheapest_flight['date']}"
         print(message)
         
+
         notification_manager.send_mail("Flight Deal Alert!", message)
